@@ -1,52 +1,78 @@
+from abc import ABC,abstractmethod
+
+
 class Band:
+    '''
+    A class that contain an list for all instruments(gitar,drums,bass)
+    '''
     instances=[]
+    solos=[]
     def __init__(self,name,members=[]):
         self.name=name
         self.members=members
         Band.instances.append(self)
     def __len__(self):
         return    
+    def __str__(self):
+        return(f"this is the band {self.name}")
+    def __repr__(self):
+        return(f"formal band {self.name}")
     def play_solos(self):
-        return(["face melting guitar solo","bom bom buh bom","rattle boom crash"])
-    @staticmethod    
-    def to_list():
+        for member in self.members:
+            Band.solos.append(member.play_solo())
+        return Band.solos
+    @classmethod    
+    def to_list(cls):
         return Band.instances
-class Musician:
+
+
+class Musician(ABC):
+    '''
+    A parent class for Guitarist, Bassist, and Drummer.also it is an abstract has
+    2 method that should the childs have it
+    '''
     def __init__(self,name):
         self.name=name
+    @abstractmethod    
+    def get_instrument(self):
+        pass
+    @abstractmethod
+    def play_solo(self):
+        pass
+    def __str__(self):
+        return f"My name is {self.name} and I play {self.get_instrument()}"
+    def __repr__(self):
+        return f"{self.__class__.__name__} instance. Name = {self.name}"
     
-class Guitarist(Musician,Band):
+class Guitarist(Musician):
+    '''
+    A child class from Musician that has 2 method that must have it from parent  
+    '''
     def __init__(self,name):
         super().__init__(name)
-    def __str__(self):
-        return(f"My name is {self.name} and I play guitar")
-    def __repr__(self):
-        return(f"Guitarist instance. Name = {self.name}")
     def get_instrument(self):
         return("guitar")
     def play_solo(self):
-        return(self.play_solos()[0])
+        return("face melting guitar solo")
 
 
-class Bassist(Musician,Band):
+class Bassist(Musician):
+    '''
+    A child class from Musician that has 2 method that must have it from parent  
+    '''
     def __init__(self,name):
         super().__init__(name)
-    def __str__(self):
-        return(f"My name is {self.name} and I play bass")
-    def __repr__(self):
-        return(f"Bassist instance. Name = {self.name}")
     def get_instrument(self):
         return("bass")
     def play_solo(self):
-        return(self.play_solos()[1])
-class Drummer(Musician,Band):
+        return("bom bom buh bom")
+class Drummer(Musician):
+    '''
+    A child class from Musician that has 2 method that must have it from parent  
+    '''
     def __init__(self,name):
         super().__init__(name)
-    def __str__(self):
-        return(f"My name is {self.name} and I play drums")
-    def __repr__(self):
-        return(f"Drummer instance. Name = {self.name}")
     def get_instrument(self):
         return("drums")
     def play_solo(self):
-        return(self.play_solos()[2])   
+        return("rattle boom crash")   
